@@ -30,7 +30,6 @@ jobs:
           target: "/mingblog/"
           strip_components: 1   # 去除 target/ 目录
           # --- 新增以下参数 ---
-          rm: true               # 传之前删掉旧的，防止占用
           overwrite: true        # 强制覆盖
           use_insecure_cipher: true # 有时旧的加密协议反而更稳
           timeout: 120s          # 给握手留出更多时间

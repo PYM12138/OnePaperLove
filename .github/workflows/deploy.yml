@@ -30,8 +30,6 @@ jobs:
           target: "/mingblog/"
           strip_components: 1   # 去除 target/ 目录
           # --- 新增以下参数 ---
-          overwrite: true        # 强制覆盖
-          use_insecure_cipher: true # 有时旧的加密协议反而更稳
           timeout: 120s          # 给握手留出更多时间
           command_timeout: 20m   # 给传输大文件留出 20 分钟
 

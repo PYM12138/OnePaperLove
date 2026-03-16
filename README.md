@@ -1,5 +1,3 @@
-# OnePaperLove
-自建博客网站
 # OnePaperLove - 简约个人博客系统
 
 基于 Spring Boot + Mybatis + Docker + Nginx 构建的容器化博客系统。

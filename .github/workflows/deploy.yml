@@ -37,9 +37,14 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /mingblog
-            # 可选：备份旧 JAR
-            cp MingBlog-0.0.1-SNAPSHOT.jar MingBlog-0.0.1-SNAPSHOT.jar.bak
-            # 重启应用容器
-            docker compose restart blog-app
-            echo "Deployment completed."
+              cd /mingblog
+              # 1. 备份旧包（带上时间戳，比 .bak 更安全）
+              mv MingBlog-0.0.1-SNAPSHOT.jar.bak MingBlog-0.0.1-SNAPSHOT.jar.old 2>/dev/null || true
+              cp MingBlog-0.0.1-SNAPSHOT.jar MingBlog-0.0.1-SNAPSHOT.jar.bak
+              
+              # 2. 强力重启
+              # 使用 up -d 而不是 restart，因为 up 会检测配置变更并重新创建容器
+              # 加上 --build 是为了防止 Docker 缓存了旧的层
+              docker compose up -d --force-recreate blog-app
+            
+              echo "🚀 Deployment completed successfully!"

@@ -1,0 +1,30 @@
+# 编译输出目录
+target/
+*.jar
+*.war
+*.ear
+
+# 测试输出
+/test-output/
+/test-reports/
+
+# IDE 相关
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+
+# 日志文件
+*.log
+
+# 操作系统生成的文件
+.DS_Store
+Thumbs.db
+
+# 上传的临时文件（如果你在项目中直接保存了上传文件）
+ # 注意：如果你把上传目录放在项目内，通常不应该提交
+/uploads/
+
+src/main/resources/application-dev.yml

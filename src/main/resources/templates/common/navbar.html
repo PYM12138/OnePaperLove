@@ -1,0 +1,72 @@
+<!-- fragments/navbar.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+<!-- 融合后的导航条 -->
+<nav id="navbar_1" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <a class="navbar-brand" href="#">一纸鸳语</a>
+    <div class="d-block d-lg-none offset-4 offset-sm-6 offset-md-7">
+        <img th:src="@{/img/test2.jpg}" width="50px" height="50px"
+             class="rounded float-left img-thumbnail mr-2" alt="头像">
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"> </span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="offset-xl-4 offset-lg-2 navbar-nav mr-auto">
+            <li class="nav-item mr-2">
+                <a class="nav-link" th:href="@{/}"><i class="fa fa-home mr-1"></i>主页</a>
+            </li>
+            <li class="nav-item mr-2">
+                <a class="nav-link" th:href="@{/archive}"><i class="fa fa-archive mr-1"></i>归档</a>
+            </li>
+            <li class="nav-item mr-2">
+                <a class="nav-link" th:href="@{/learn}"><i class="fa fa-book mr-1"></i>学习</a>
+            </li>
+            <li class="nav-item mr-2">
+                <a class="nav-link" th:href="@{/updateRecord}"><i class="fa fa-check-circle mr-1"></i>更新</a>
+            </li>
+            <li class="nav-item mr-2">
+                <a class="nav-link" th:href="@{/aboutMe}"><i class="fa fa-address-card mr-1"></i>关于我</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav">
+            <!-- 未登录时显示登录/注册按钮 -->
+            <a class="btn btn-primary" th:href="@{/login}" role="button" style="font-family: al-Light;"
+               sec:authorize="!isAuthenticated()">
+                <i class="fa fa-sign-in mr-1"></i><span>登录</span>
+            </a>
+
+            <!-- 登录且有 ADMIN 角色时显示欢迎信息和后台链接 -->
+            <!-- 登录后显示欢迎信息、后台入口和退出按钮 -->
+
+            <li class="nav-item dropdown show-on-hover" sec:authorize="hasRole('ADMIN')">
+                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown">
+                    <i class="fa fa-user mr-1"></i> 欢迎 <strong sec:authentication="name"></strong>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" th:href="@{/admin/index}">
+                        <i class="fa fa-cogs mr-1"></i> 进入后台
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <form th:action="@{/logout}" method="post" style="margin: 0;">
+                        <button type="submit" class="dropdown-item">
+                            <i class="fa fa-sign-out mr-1"></i> 退出登录
+                        </button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+
+
+    </div>
+</nav>
+
+</body>
+</html>

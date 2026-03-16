@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th=http://www.thymeleaf.org
+>
+<head>
+    <meta charset="UTF-8">
+    <title>网站管理 | 评论管理</title>
+
+    <link rel="stylesheet" th:href="@{/adminLTE/dist/css/adminlte.min.css}">
+    <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/editormd/css/editormd.min.css}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" th:href="@{/common/admin/common.css}">
+
+    <style>
+    /*    @font-face {
+            font-family: 'al-RegularL3';
+            src: url(../fonts/AlibabaPuHuiTi-3-55-RegularL3.woff2);
+        }
+
+        @font-face {
+            font-family: 'al-Regular';
+            src: url(../fonts/AlibabaPuHuiTi-3-55-Regular.woff2);
+        }
+
+        @font-face {
+            font-family: 'al-Thin';
+            src: url(../fonts/AlibabaPuHuiTi-3-35-Thin.woff2);
+        }
+
+        @font-face {
+            font-family: 'al-Light';
+            src: url(../fonts/AlibabaPuHuiTi-3-45-Light.woff2);
+        }
+
+        @font-face {
+            font-family: 'al-SemiBold';
+            src: url(../fonts/AlibabaPuHuiTi-3-75-SemiBold.woff2);
+        }
+
+        body {
+            font-family: al-RegularL3;
+            font-size: 15px;
+        }
+
+        .nav-treeview p {
+            font-size: 14px;
+        }
+*/
+        .btn-no-border {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+
+    </style>
+</head>
+<body class="sidebar-mini sidebar-collapse">
+<!--<body style="height: auto">-->
+<div class="wrapper">
+    <!-- Navbar 顶部导航-->
+    <!--<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fa fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="../../index3.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">Contact</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" data-widget="navbar-search" data-target="#navbar-search2" href="#" role="button">
+                    <i class="fa fa-search"></i>
+                </a>
+                <div class="navbar-search-block" id="navbar-search2" style="display: none;">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
+                                   aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    <span class="badge badge-danger navbar-badge">3</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a href="#" class="dropdown-item">
+
+                        <div class="media">
+                            <img src="" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Brad Diesel
+                                    <span class="float-right text-sm text-danger"><i class="fa fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">Call me whenever you can
+                                </p>
+                                <p class="text-sm text-muted"><i class="fa fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+
+                        <div class="media">
+                            <img src="" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    John Pierce
+                                    <span class="float-right text-sm text-muted"><i class="fa fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">I got your message bro</p>
+                                <p class="text-sm text-muted"><i class="fa fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+
+                        <div class="media">
+                            <img src="" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Nora Silvester
+                                    <span class="float-right text-sm text-warning"><i class="fa fa-star"></i></span>
+                                </h3>
+                                <p class="text-sm">The subject goes here</p>
+                                <p class="text-sm text-muted"><i class="fa fa-clock mr-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fa fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <i class="fa fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                    <i class="fa fa-th-large"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>-->
+    <div th:replace="common/admin/TopNavBar::topNavBar"></div>
+
+    <!-- Main Sidebar Container 侧边导航-->
+    <div th:replace="common/admin/sidebar :: sidebar"></div>
+
+    <!--页面主体内容-->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <h1>
+                        <i class=" fa fa-file-code-o mr-2" aria-hidden="true"></i>评论管理
+                    </h1>
+                    <ol class="breadcrumb ml-2 mt-2">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">评论管理</li>
+                        <li class="breadcrumb-item active">评论审核</li>
+                    </ol>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content row">
+            <div class="comments-list col-9 ">
+                <div class="card card-outline card-success">
+                    <div class="card-header">来自 <a href="#">asd1523</a></div>
+                    <div class="card-body">
+                        这是一条评论。
+                        <span class="float-right"><i class="fa fa-check-circle fa-2x text-success"></i></span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="">
+                            评论于<a href="#">《123》</a>
+                            <div class="float-right">
+                                <button class="approve-btn btn btn-outline-success rounded-pill btn-no-border"><i
+                                        class="fa fa-check fa-2x " aria-hidden="true"></i></button>
+                                <button class="reject-btn btn btn-outline-danger rounded-pill btn-no-border"><i
+                                        class="fa fa-times fa-2x " aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-outline card-danger">
+                    <div class="card-header">来自 <a href="#">asd1523</a></div>
+                    <div class="card-body">
+                        这是一条评论。
+                        <span class="float-right"><i class="fa fa-ban fa-2x text-danger" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="">
+                            评论于<a href="#">《123》</a>
+                            <div class="float-right">
+                                <button class="approve-btn btn btn-outline-success rounded-pill btn-no-border"><i
+                                        class="fa fa-check fa-2x " aria-hidden="true"></i></button>
+                                <button class="reject-btn btn btn-outline-danger rounded-pill btn-no-border"><i
+                                        class="fa fa-times fa-2x " aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-outline card-warning">
+                    <div class="card-header" style="font-size: 20px"><b class="text-warning">提示</b></div>
+                    <div class="card-body" style="height: 300px">审核通过后，<strong>两小时后</strong>显示评论</div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+</div>
+
+</body>
+<script src="js/jquery-3.3.1.js" th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/adminLTE/plugins/jquery-ui/jquery-ui.min.js}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<script src="js/jquery-3.3.1.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script th:src="@{/adminLTE/plugins/fastclick/fastclick.js}"></script>
+
+
+<script th:src="@{/adminLTE/dist/js/adminlte.min.js}"></script>
+
+
+<script>
+
+    $(function () {
+            $('.approve-btn').click(function () {
+                var comment = $(this).closest('.comment');
+                comment.removeClass('comment-pending');
+                comment.addClass('comment-approved');
+                comment.find('.approve-btn').remove();
+                comment.find('.reject-btn').remove();
+                comment.append('<span class="status-icon"><i class="fa fa-check-circle"></i></span>');
+            });
+            sidebar_active();
+
+
+        }
+    )
+    function sidebar_active() {
+        const currentUrl = window.location.pathname;
+        $('.nav-sidebar a').each(function () {
+            const link = $(this).attr('href');
+            if (link && currentUrl.endsWith(link)) {
+                $(this).addClass('active');
+                $(this).closest('.nav-item').addClass('menu-open');
+                $(this).parents('.nav-treeview').prev('a').addClass('active');
+                // 修改图标为实心圆
+                $(this).find('.fa-circle-o').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+            }
+        });
+
+    }
+    /*   var expandBtn = document.getElementById("expand-btn");
+       expandBtn.addEventListener("click", function() {
+           var expandableContent = document.querySelector("[data-widget='expandable-table']");
+           var isExpanded = expandableContent.getAttribute("aria-expanded");
+
+           if (isExpanded === "true") {
+               expandableContent.setAttribute("aria-expanded", "false");
+           } else {
+               expandableContent.setAttribute("aria-expanded", "true");
+           }
+       });*/
+</script>
+
+</html>

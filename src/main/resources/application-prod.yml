@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:mysql://mysql:3306/mingblog?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_PASSWORD}          # 必须提供，无默认值
+  redis:
+    host: redis
+    port: 6379
+    password: ${REDIS_PASSWORD}           # 无密码则留空，但必须显式设置
+  mail:
+    host: smtp.qq.com
+    username: ${MAIL_USERNAME}            # 必须提供
+    password: ${MAIL_PASSWORD}             # 必须提供
+  thymeleaf:
+    cache: true
+logging:
+  level:
+    com.pym.mingblog: INFO
+upload:
+  path: /mingblog/uploads/

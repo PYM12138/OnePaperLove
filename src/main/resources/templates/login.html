@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th=http://www.thymeleaf.org>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>登录 | 一纸鸳语</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+    <!-- Google Fonts 字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: #ffffff;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .container-full {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 蓝色背景现在在左边 */
+     /*   .login-left {
+            flex: 1;
+            background: linear-gradient(to bottom right, #2563eb, #1d4ed8);
+            clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+            padding: 2rem;
+            z-index: 1;
+        }
+           .login-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
+            letter-spacing: 2px;
+        }
+
+
+        .login-left img {
+            max-width: 80%;
+            height: auto;
+            margin-top: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+
+        */
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(to bottom right, #2563eb, #1d4ed8);
+            clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+            color: #1a237e;
+        }
+
+
+        .login-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #1a237e;
+            text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            letter-spacing: 1.5px;
+        }
+
+        .login-left img {
+            max-width: 90%;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .login-left img:hover {
+            transform: scale(1.02);
+        }
+
+
+
+
+        .login-right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-color: #ffffff;
+            z-index: 2;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .card {
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header.bg-primary {
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+        }
+
+        .form-control {
+            border-radius: 0.75rem;
+        }
+
+        .btn-primary {
+            border-radius: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .container-full {
+                flex-direction: column-reverse;
+            }
+
+            .login-left {
+                clip-path: none;
+                padding: 3rem 1rem;
+            }
+
+            .login-left img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-full">
+    <!-- 左侧：蓝色背景图 -->
+    <div class="login-left">
+        <a href="/">
+            <h1 style="color: white;">一纸鸳语</h1>
+        </a>
+        <img th:src="@{img/svg/browsing-online.svg}" src="https://undraw.co/api/illustrations/blog-post.svg" alt="Blog Illustration" />
+    </div>
+
+
+
+    <!-- 右侧：登录表单 -->
+    <div class="login-right">
+        <div class="login-box">
+            <div class="card card-outline card-primary">
+                <div class="card-header text-center bg-primary">
+                    <p class="h1 text-white mb-0">欢迎登录</p>
+                </div>
+                <div class="card-body">
+                    <p class="login-box-msg text-muted">请登录以继续</p>
+
+                    <form th:action="@{/doLogin}" method="post">
+<!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+                        <div class="input-group mb-3">
+                            <input type="text" name="username" class="form-control" placeholder="用户名" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text"><i class="fas fa-user"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <input type="password" name="password" class="form-control" placeholder="密码" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text"><i class="fas fa-lock"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <!--TODO 记住我-->
+                            <!--    <div class="icheck-primary">
+                                    <input type="checkbox" id="remember">
+                                    <label for="remember">记住我</label>
+                                </div>-->
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-primary btn-block">登录</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3 mb-3">
+                        <span class="text-muted">或使用社交账号登录</span>
+                    </div>
+
+                    <div class="d-flex justify-content-center mb-3">
+                        <a href="#"  class="btn btn-outline-success mr-2" onclick="showToast(); return false;"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="btn btn-outline-danger" onclick="showToast(); return false;"><i class="fab fa-google"></i></a>
+                    </div>
+
+                    <!-- 页面内容 -->
+                    <div class="mt-3 text-center">
+                        <a href="#" onclick="showToast(); return false;">忘记密码？</a> |
+                        <a href="#" onclick="showToast(); return false;">注册账号</a>
+                    </div>
+
+                    <!-- Toast 容器 -->
+                    <div aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 1rem; right: 1rem; min-width: 250px; z-index: 1080;">
+                        <div id="liveToast" class="toast" data-delay="3000" style="min-width: 250px;">
+                            <div class="toast-header bg-warning text-dark">
+                                <strong class="mr-auto">提示</strong>
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="关闭">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="toast-body">
+                                该功能暂未开放。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+<!-- JS 控制 -->
+<script>
+    function showToast() {
+        $('#liveToast').toast('show');
+    }
+</script>
+</body>
+</html>

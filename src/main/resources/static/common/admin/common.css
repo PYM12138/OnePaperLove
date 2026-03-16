@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'al-RegularL3';
+    src: url(/fonts/AlibabaPuHuiTi-3-55-RegularL3.woff2);
+}
+
+@font-face {
+    font-family: 'al-Regular';
+    src: url(/fonts/AlibabaPuHuiTi-3-55-Regular.woff2);
+}
+
+@font-face {
+    font-family: 'al-Thin';
+    src: url(/fonts/AlibabaPuHuiTi-3-35-Thin.woff2);
+}
+
+@font-face {
+    font-family: 'al-Light';
+    src: url(/fonts/AlibabaPuHuiTi-3-45-Light.woff2);
+}
+
+@font-face {
+    font-family: 'al-SemiBold';
+    src: url(/fonts/AlibabaPuHuiTi-3-75-SemiBold.woff2);
+}
+
+body {
+    font-family: al-RegularL3;
+    font-size: 16px;
+}
+
+.nav-treeview p {
+    font-size: 14px;
+}
+
+/* 鼠标悬停显示 dropdown */
+.show-on-hover:hover > .dropdown-menu {
+    display: block;
+    margin-top: 0; /* 防止跳动 */
+}
+.show-on-hover > .dropdown-toggle::after {
+    display: none; /* 如果不想显示下拉箭头 */
+}

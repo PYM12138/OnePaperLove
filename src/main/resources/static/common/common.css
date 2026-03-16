@@ -1,0 +1,117 @@
+/* 导航栏样式 */
+#navbar_1 {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#navbar_1 .navbar-brand {
+    font-family: 'al-SemiBold';
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+#navbar_1 .nav-link {
+    font-family: 'al-Light';
+    color: #343a40;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+#navbar_1 .nav-link:hover,
+#navbar_1 .nav-link.active {
+    color: #007bff;
+}
+
+#navbar_1 .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #007bff;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+#navbar_1 .nav-link:hover::after,
+#navbar_1 .nav-link.active::after {
+    transform: scaleX(1);
+}
+
+#navbar_1 .btn-primary {
+    font-family: 'al-Light';
+    background-color: #007bff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease;
+}
+
+#navbar_1 .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.nav-link {
+    display: inline-block !important;
+    width: auto !important;
+    padding: 8px 12px;
+    border: none;
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom: 2px solid #007bff !important; /* 自定义横线颜色 */
+}
+
+/* 字体 */
+/* 恢复自定义字体 */
+@font-face {
+    font-family: 'al-RegularL3';
+    src: url('../fonts/AlibabaPuHuiTi-3-55-RegularL3.woff2') format('woff2');
+    font-display: swap;  /* 添加这一行 */
+}
+
+@font-face {
+    font-family: 'al-Regular';
+    src: url('../fonts/AlibabaPuHuiTi-3-55-Regular.woff2') format('woff2');
+    font-display: swap;  /* 添加这一行 */
+}
+
+@font-face {
+    font-family: 'al-Thin';
+    src: url('../fonts/AlibabaPuHuiTi-3-35-Thin.woff2') format('woff2');
+    font-display: swap;  /* 添加这一行 */
+}
+
+@font-face {
+    font-family: 'al-Light';
+    src: url('../fonts/AlibabaPuHuiTi-3-45-Light.woff2') format('woff2');
+    font-display: swap;  /* 添加这一行 */
+}
+
+@font-face {
+    font-family: 'al-SemiBold';
+    src: url('../fonts/AlibabaPuHuiTi-3-75-SemiBold.woff2') format('woff2');
+    font-display: swap;  /* 添加这一行 */
+}
+
+body {
+    font-family: 'al-Regular', sans-serif;
+    font-size: 16px;
+    background-color: #f8f9fa;
+}
+/* 鼠标悬停显示 dropdown */
+.show-on-hover:hover > .dropdown-menu {
+    display: block;
+    margin-top: 0; /* 防止跳动 */
+}
+.show-on-hover > .dropdown-toggle::after {
+    display: none; /* 如果不想显示下拉箭头 */
+}
+
+/*
+body {
+    font-family: al-Regular,serif;
+    font-size: 18px; !* 全局字体增大 *!
+    background-color: #f5f7fa; !* 柔和背景色 *!
+}*/

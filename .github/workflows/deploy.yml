@@ -104,4 +104,3 @@ jobs:
             docker compose pull blog-app
             # 强制根据新镜像重启容器
             docker compose up -d --force-recreate blog-app
-            # 顺便清理一下服务器上残留的旧镜像（释放磁盘空间）

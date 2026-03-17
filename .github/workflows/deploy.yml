@@ -1,11 +1,65 @@
-name: Deploy to Server
+#name: Deploy to Server
+#
+#on:
+#  push:
+#    branches: [ main ]
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Set up JDK 8
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '8'
+#          distribution: 'temurin'
+#
+#      - name: Build with Maven
+#        run: mvn clean package -DskipTests  # 👈 加上这个参数，忽略maven的单元测试暂时用来通过github actions的执行流程
+#
+#      - name: Upload JAR to server
+#        uses: appleboy/scp-action@v0.1.7
+#        with:
+#          host: ${{ secrets.SERVER_HOST }}
+#          username: ${{ secrets.SERVER_USER }}
+#          key: ${{ secrets.SERVER_SSH_KEY }}
+#          source: "target/MingBlog-0.0.1-SNAPSHOT.jar"
+#          target: "/mingblog/"
+#          strip_components: 1   # 去除 target/ 目录
+#          # --- 新增以下参数 ---
+#          timeout: 120s          # 给握手留出更多时间
+#          command_timeout: 20m   # 给传输大文件留出 20 分钟
+#
+#      - name: Deploy via SSH
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.SERVER_HOST }}
+#          username: ${{ secrets.SERVER_USER }}
+#          key: ${{ secrets.SERVER_SSH_KEY }}
+#          script: |
+#              cd /mingblog
+#              # 1. 备份旧包（带上时间戳，比 .bak 更安全）
+#              mv MingBlog-0.0.1-SNAPSHOT.jar.bak MingBlog-0.0.1-SNAPSHOT.jar.old 2>/dev/null || true
+#              cp MingBlog-0.0.1-SNAPSHOT.jar MingBlog-0.0.1-SNAPSHOT.jar.bak
+#
+#              # 2. 强力重启
+#              # 使用 up -d 而不是 restart，因为 up 会检测配置变更并重新创建容器
+#              # 加上 --build 是为了防止 Docker 缓存了旧的层
+#              docker compose up -d --force-recreate blog-app
+#
+#              echo "🚀 Deployment completed successfully!"
+
+name: Docker Deploy to Server
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,38 +70,38 @@ jobs:
         with:
           java-version: '8'
           distribution: 'temurin'
+          cache: 'maven' # 👈 顺手开启 Maven 缓存，下次构建快飞起
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests  # 👈 加上这个参数，忽略maven的单元测试暂时用来通过github actions的执行流程
+        run: mvn clean package -DskipTests
 
-      - name: Upload JAR to server
-        uses: appleboy/scp-action@v0.1.7
+      # 1. 登录 Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "target/MingBlog-0.0.1-SNAPSHOT.jar"
-          target: "/mingblog/"
-          strip_components: 1   # 去除 target/ 目录
-          # --- 新增以下参数 ---
-          timeout: 120s          # 给握手留出更多时间
-          command_timeout: 20m   # 给传输大文件留出 20 分钟
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Deploy via SSH
+      # 2. 构建镜像并推送到 Docker Hub
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # 格式：用户名/项目名:版本号
+          tags: ${{ secrets.DOCKER_USERNAME }}/mingblog:latest
+
+      # 3. SSH 登录服务器，让 Docker 换新装
+      - name: Remote Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-              cd /mingblog
-              # 1. 备份旧包（带上时间戳，比 .bak 更安全）
-              mv MingBlog-0.0.1-SNAPSHOT.jar.bak MingBlog-0.0.1-SNAPSHOT.jar.old 2>/dev/null || true
-              cp MingBlog-0.0.1-SNAPSHOT.jar MingBlog-0.0.1-SNAPSHOT.jar.bak
-              
-              # 2. 强力重启
-              # 使用 up -d 而不是 restart，因为 up 会检测配置变更并重新创建容器
-              # 加上 --build 是为了防止 Docker 缓存了旧的层
-              docker compose up -d --force-recreate blog-app
-            
-              echo "🚀 Deployment completed successfully!"
+            cd /mingblog
+            # 拉取最新的镜像（只下载改动的部分，极快）
+            docker compose pull blog-app
+            # 强制根据新镜像重启容器
+            docker compose up -d --force-recreate blog-app
+            # 顺便清理一下服务器上残留的旧镜像（释放磁盘空间）

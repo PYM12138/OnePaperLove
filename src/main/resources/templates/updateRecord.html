@@ -43,61 +43,6 @@
 </head>
 <body>
 <!--导航条-->
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-    <a class="navbar-brand" href="#">一纸鸳语</a>
-    <div class="d-block d-lg-none offset-4 offset-sm-6 offset-md-7">
-        &lt;!&ndash;        折叠之后的出现再导航条位置的小窗口，TODO 小窗功能暂未开发&ndash;&gt;
-        <img th:src="@{/img/test2.jpg}" width="50px" height="50px" class="rounded float-left img-thumbnail mr-2 "
-             alt="...">
-    </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse " id="navbarSupportedContent">
-        <ul class="offset-xl-4  offset-lg-2 navbar-nav mr-auto">
-            <li class="nav-item mr-2">
-                <a class="nav-link   "><i class="fa fa-home mr-1" aria-hidden="true"></i>主页</a>
-            </li>
-            <li class="nav-item mr-2">
-                <a class="nav-link" th:href="@{/archive}"><i class="fa fa-archive mr-1"></i>归档</a>
-            </li>
-            <li class="nav-item mr-2">
-                <a class="nav-link" th:href="@{/learn}"><i class="fa fa-book mr-1" aria-hidden="true"></i>学习</a>
-            </li>
-            <li class="nav-item mr-2">
-                &lt;!&ndash;TODO game页面待开发&ndash;&gt;
-                <a class="nav-link" href="#"><i class="fa fa-gamepad mr-1 " aria-hidden="true"></i>游戏</a>
-            </li>
-            <li class="nav-item mr-2">
-                &lt;!&ndash;TODO 6/20搞定更新页面&ndash;&gt;
-                <a class="nav-link active" href="#"><i class="fa fa-check-circle mr-1" aria-hidden="true"></i>更新</a>
-            </li>
-            <li class="nav-item mr-2">
-                &lt;!&ndash; TODO 6/21搞定关于我页面&ndash;&gt;
-                <a class="nav-link" href="#"><i class="fa fa-address-card mr-1" aria-hidden="true"></i>关于我</a>
-            </li>
-            &lt;!&ndash; <li class="nav-item dropdown">
-                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                     Dropdown
-                 </a>
-                 <div class="dropdown-menu">
-                     <a class="dropdown-item" href="#">Action</a>
-                     <a class="dropdown-item" href="#">Another action</a>
-                     <div class="dropdown-divider"></div>
-                     <a class="dropdown-item" href="#">Something else here</a>
-                 </div>
-             </li>
-             <li class="nav-item">
-                 <a class="nav-link disabled">Disabled</a>
-             </li>&ndash;&gt;
-        </ul>
-        <button type="button" class="btn btn-primary " style="font-family: al-Light;"><i class="fa fa-sign-in mr-1"
-                                                                                         aria-hidden="true"></i><span>登录/注册</span>
-        </button>
-    </div>
-</nav>-->
 <div th:replace="common/navbar :: #navbar_1"></div>
 <!--遮罩层-->
 <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"

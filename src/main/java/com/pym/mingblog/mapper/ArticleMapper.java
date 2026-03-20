@@ -77,6 +77,9 @@ public interface ArticleMapper {
             "ORDER BY a.publishDate DESC")
     @Results({
             @Result(property = "articleId", column = "articleId"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "publishDate", column = "publishDate"),
+            @Result(property = "type", column = "type"),
             // 嵌套 Category 对象的映射（只有这部分需要写）
             @Result(property = "category.categoryId", column = "category_id"),
             @Result(property = "category.categoryName", column = "category_name"),

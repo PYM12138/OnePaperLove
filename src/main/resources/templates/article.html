@@ -10,11 +10,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <meta name="keywords" content="学习,自学,java后端,学习经验分享,工作,生活,随想,博客">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/font-awesome-4.7.0/css/font-awesome.min.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/common/common.css}">
+
     <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/editormd/css/editormd.preview.min.css}">
     <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/editormd/css/editormd.min.css}">
 
@@ -160,10 +161,8 @@
 
 </div>
 
-
-</body>
-<script src="js/jquery-3.3.1.js" th:src="@{/js/jquery-3.5.1.min.js}"></script>
-<script src="js/jquery-3.3.1.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/common/common.js}"></script>
 
 <!--editormd所需要的组件-->
@@ -263,15 +262,17 @@
 
 
     //手机屏幕点击导航之后自动折叠导航栏
-/*
-    $('.navbar-nav>li>a').on('click', function () {
-        $('.navbar-collapse').collapse('hide');
-    });
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-*/
+    /*
+        $('.navbar-nav>li>a').on('click', function () {
+            $('.navbar-collapse').collapse('hide');
+        });
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    */
 
 
 </script>
+</body>
+
 </html>

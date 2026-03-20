@@ -1,4 +1,10 @@
 spring:
+  web:
+    resources:
+      cache:
+        period: 31536000 # 设置缓存时间为 1 年（单位：秒）
+      chain:
+        cache: true # 启用资源链缓存
   datasource:
     url: jdbc:mysql://mysql:3306/mingblog?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
@@ -18,3 +24,4 @@ logging:
     com.pym.mingblog: INFO
 upload:
   path: /mingblog/uploads/
+

@@ -67,6 +67,39 @@
 
     </div>
 </nav>
+<script>
+    (function () {
+        let currentRequest = null;
 
+        // 🔥 劫持所有导航点击（只针对导航栏）
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('#navbar_1 a.nav-link');
+            if (!link) return;
+
+            e.preventDefault();
+
+            // 🚀 1. 终止当前页面的 Ajax（如果有）
+            if (window.currentRequest && typeof window.currentRequest.abort === 'function') {
+                try { window.currentRequest.abort(); } catch (e) {}
+            }
+
+            // 🚀 2. 停止所有动画
+            if (window.jQuery) {
+                try { $('*').stop(true, true); } catch (e) {}
+            }
+
+            // 🚀 3. 立即跳转（关键）
+            window.location.href = link.href;
+        });
+
+        // 👉 可选：页面卸载时也中断请求
+        window.addEventListener('beforeunload', function () {
+            if (window.currentRequest && typeof window.currentRequest.abort === 'function') {
+                try { window.currentRequest.abort(); } catch (e) {}
+            }
+        });
+
+    })();
+</script>
 </body>
 </html>

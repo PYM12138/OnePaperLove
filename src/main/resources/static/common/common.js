@@ -4,10 +4,30 @@ $(document).ready(function() {
 
     // 点击导航项时切换高亮
     $('#navbar_1 .nav-link').on('click', function(e) {
+
+
+        e.preventDefault(); // ❗ 阻止默认跳转（关键）
+
+        const href = $(this).attr('href');
+
+        // 🔥 1. 终止正在进行的 Ajax
+        if (window.currentRequest && typeof window.currentRequest.abort === 'function') {
+            try { window.currentRequest.abort(); } catch (err) {}
+        }
+
+        // 🔥 2. 停止所有动画
+        if (window.jQuery) {
+            try { $('*').stop(true, true); } catch (err) {}
+        }
+
+        // 🔥 3. 高亮切换（你原来的逻辑）
         // 移除所有导航项的 active 类
         $('#navbar_1 .nav-link').removeClass(activeClass);
         // 为当前点击的导航项添加 active 类
         $(this).addClass(activeClass);
+
+        // 🚀 4. 立即跳转（核心）
+        window.location.href = href;
     });
 
     // 页面加载时，根据当前 URL 高亮导航项

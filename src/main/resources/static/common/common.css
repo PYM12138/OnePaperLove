@@ -65,35 +65,35 @@
 
 /* 字体 */
 /* 恢复自定义字体 */
-@font-face {
+/*@font-face {
     font-family: 'al-RegularL3';
     src: url('../fonts/AlibabaPuHuiTi-3-55-RegularL3.woff2') format('woff2');
-    font-display: swap;  /* 添加这一行 */
+    font-display: swap;  !* 添加这一行 *!
 }
 
 @font-face {
     font-family: 'al-Regular';
     src: url('../fonts/AlibabaPuHuiTi-3-55-Regular.woff2') format('woff2');
-    font-display: swap;  /* 添加这一行 */
+    font-display: swap;  !* 添加这一行 *!
 }
 
 @font-face {
     font-family: 'al-Thin';
     src: url('../fonts/AlibabaPuHuiTi-3-35-Thin.woff2') format('woff2');
-    font-display: swap;  /* 添加这一行 */
+    font-display: swap;  !* 添加这一行 *!
 }
 
 @font-face {
     font-family: 'al-Light';
     src: url('../fonts/AlibabaPuHuiTi-3-45-Light.woff2') format('woff2');
-    font-display: swap;  /* 添加这一行 */
+    font-display: swap;  !* 添加这一行 *!
 }
 
 @font-face {
     font-family: 'al-SemiBold';
     src: url('../fonts/AlibabaPuHuiTi-3-75-SemiBold.woff2') format('woff2');
-    font-display: swap;  /* 添加这一行 */
-}
+    font-display: swap;  !* 添加这一行 *!
+}*/
 
 body {
     font-family: 'al-Regular', sans-serif;

@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 /**
  * @Author: Ming
  * @Date 2023/7/30 16:20
- * @Description: 业务层数据统一封装
+ * @Description: service层数据统一封装
  */
 @Data
 public class DataMap<T> extends LinkedHashMap {

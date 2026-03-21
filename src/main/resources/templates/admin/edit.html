@@ -230,21 +230,22 @@
                                 <!-- 上传封面按钮（左侧） -->
 
                                 <!-- 封面上传区域 -->
-                             <!--   <div id="uploadArea"
-                                     class="btn btn-outline-primary  rounded p-3 mb-2 text-center"
+                                <!--   <div id="uploadArea"
+                                        class="btn btn-outline-primary  rounded p-3 mb-2 text-center"
+                                        style="border-style: dashed; cursor: pointer;">
+                                       <p class="mb-1">点击或拖拽图片到此上传封面</p>
+                                       <input type="file" id="coverUpload" accept="image/*" style="display: none;">
+
+                                       <div class="progress mt-2" style="height: 6px; display: none;">
+                                           <div class="progress-bar bg-info" role="progressbar" style="width: 0;"></div>
+                                       </div>
+                                       &lt;!&ndash; ✅ 封面预览图 &ndash;&gt;
+                                       <img id="coverPreview" src="" alt="封面图预览" class="img-fluid mt-2 rounded" style="max-height:150px; display:none;">
+
+                                   </div>
+                                   <span id="coverFileName" class="text-muted ml-2">未选择文件</span>-->
+                                <div id="uploadArea" class="btn btn-outline-primary rounded p-3 mb-2 text-center"
                                      style="border-style: dashed; cursor: pointer;">
-                                    <p class="mb-1">点击或拖拽图片到此上传封面</p>
-                                    <input type="file" id="coverUpload" accept="image/*" style="display: none;">
-
-                                    <div class="progress mt-2" style="height: 6px; display: none;">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 0;"></div>
-                                    </div>
-                                    &lt;!&ndash; ✅ 封面预览图 &ndash;&gt;
-                                    <img id="coverPreview" src="" alt="封面图预览" class="img-fluid mt-2 rounded" style="max-height:150px; display:none;">
-
-                                </div>
-                                <span id="coverFileName" class="text-muted ml-2">未选择文件</span>-->
-                                <div id="uploadArea" class="btn btn-outline-primary rounded p-3 mb-2 text-center" style="border-style: dashed; cursor: pointer;">
                                     <p class="mb-1">点击或拖拽图片到此上传封面</p>
                                     <input type="file" id="coverUpload" accept="image/*" style="display: none;">
 
@@ -253,10 +254,13 @@
                                     </div>
 
                                     <!-- ✅ 封面预览图 -->
-                                    <img id="coverPreview" src="" alt="封面图预览" class="img-fluid mt-2 rounded" style="max-height:150px; display:none;">
+                                    <img id="coverPreview" src="" alt="封面图预览" class="img-fluid mt-2 rounded"
+                                         style="max-height:150px; display:none;">
 
                                     <!-- 新增：取消按钮，初始隐藏 -->
-                                    <button id="cancelCoverBtn" type="button" class="btn btn-sm btn-warning mt-2" style="display: none;">取消上传</button>
+                                    <button id="cancelCoverBtn" type="button" class="btn btn-sm btn-warning mt-2"
+                                            style="display: none;">取消上传
+                                    </button>
                                 </div>
                                 <span id="coverFileName" class="text-muted ml-2">未选择文件</span>
 
@@ -304,7 +308,7 @@
         initCoverUpload();
     });
 
-    function addCategory() {
+    /*function addCategory() {
         $('#saveCategoryBtn').click(function () {
             let categoryName = $('#categoryNameInput').val().trim();
 
@@ -322,9 +326,22 @@
                     if (result.status === 200) {
                         alert('添加成功');
                         $('#addCategoryModal').modal('hide'); // 关闭模态框
-                        $('#categoryNameInput').val('');       // 清空输入框
-                        // 刷新列表
-                        getCategories();
+
+                        // --- 改进处：手动更新 UI ---
+                        let categoryName = $('#categoryNameInput').val().trim();
+                        // 如果后端返回了新创建的 ID，直接加进去
+                        if (result.data && result.data.categoryId) {
+                            $('#categorySelect').append(
+                                `<option value="${result.data.categoryId}">${categoryName}</option>`
+                            );
+                            // 自动选中新加的分类（提升体验）
+                            $('#categorySelect').val(result.data.categoryId);
+                        } else {
+                            // 如果后端没返回ID，再执行重新拉取
+                            getCategories();
+                        }
+
+                        $('#categoryNameInput').val(''); // 清空输入框
                     }
                 },
                 error: function (xhr) {
@@ -342,8 +359,54 @@
             });
         });
 
-    }
+    }*/
+    function addCategory() {
+        $('#saveCategoryBtn').off('click').on('click', function () {
+            const categoryName = $('#categoryNameInput').val().trim();
+            if (!categoryName) {
+                alert('请输入分类名称');
+                return;
+            }
 
+            const $btn = $(this);
+            $btn.prop('disabled', true).text('保存中...');
+
+            $.ajax({
+                url: '/category/add',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ categoryName: categoryName }),
+                success: function (result) {
+                    // 关键点：JsonResult.toJSON() 返回的是字符串，
+                    // 如果 jQuery 没有自动解析，我们需要手动解析一下
+                    const res = (typeof result === 'string') ? JSON.parse(result) : result;
+                    console.log("解析后的后端数据:", res);
+
+                    // 根据你的 JsonResult.java，成功状态码默认是 0
+                    // 但你在 Controller 手传了 200，所以这里我们兼容处理
+                    if (res.status === 0 || res.status === 200) {
+                        alert('添加成功');
+                        $('#addCategoryModal').modal('hide');
+                        $('#categoryNameInput').val('');
+                        // 重新加载分类下拉框
+                        getCategories();
+                    } else {
+                        alert('保存失败：' + (res.message || '未知错误'));
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 409) {
+                        alert('该分类名称已存在，请重新输入');
+                    } else {
+                        alert('服务器异常，错误码：' + xhr.status);
+                    }
+                },
+                complete: function () {
+                    $btn.prop('disabled', false).text('保存');
+                }
+            });
+        });
+    }
     function getCategories() {
         $.ajax({
             url: "/category/all",
@@ -450,7 +513,7 @@
             height: 600,
             syncScrolling: true, //设置双向滚动
             path: "../../../editormd/lib/", //lib目录的路径
-            previewTheme: "white", //代码块使用dark主题
+            previewTheme: "white", //代码块使用white主题
             codeFold: true,
             emoji: true,
             tocm: true, // Using [TOCM]

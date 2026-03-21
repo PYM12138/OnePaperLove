@@ -65,6 +65,13 @@
             <artifactId>aliyun-sms-spring-boot-starter</artifactId>
         </dependency>-->
 
+        <!-- 腾讯云COS-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.212</version> <!-- 建议使用最新版本 -->
+        </dependency>
+
          <dependency>
              <groupId>org.thymeleaf.extras</groupId>
              <artifactId>thymeleaf-extras-springsecurity5</artifactId>

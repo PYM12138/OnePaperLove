@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 /**
  * @Author: Ming
  * @Date 2023/7/31 0:05
- * Describe: 控制层Json数据处理
+ * Describe: controller层Json数据处理
  */
 public class JsonResult {
 

@@ -10,7 +10,11 @@ import com.pym.mingblog.service.ArticleTagService;
 import com.pym.mingblog.utils.ArticleLogUtil;
 import com.pym.mingblog.utils.DataMap;
 import com.pym.mingblog.utils.JsonResult;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.model.ObjectMetadata;
+import com.qcloud.cos.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +36,15 @@ import java.util.stream.Collectors;
  */
 @RestController
 public class ArticleController {
+    @Autowired
+    private COSClient cosClient;
+
+    @Value("${cos.region}")
+    private String region;
+
+    @Value("${cos.bucket-name}")
+    private String bucketName;
+
     @Autowired
     private ArticleService articleService;
 
@@ -91,14 +104,14 @@ public class ArticleController {
     //查询所有文章
     @GetMapping(value = "/findAllArticles", produces = MediaType.APPLICATION_JSON_VALUE)
     public String showAllArticles(@RequestParam("pageNum") int pageNum,
-                                  @RequestParam("pageSize") int pageSize){
+                                  @RequestParam("pageSize") int pageSize) {
         DataMap<?> allArticles = articleService.findAllArticles(pageSize, pageNum);
         return JsonResult.build(allArticles).toJSON();
     }
 
     //查询单篇文章
     @GetMapping(value = "/findArticleById")
-    public String showArticle(@RequestParam("articleId") long articleId){
+    public String showArticle(@RequestParam("articleId") long articleId) {
         /*DataMap<?> article = articleService.findArticleById(articleId);
         return JsonResult.build(article).toJSON();*/
         DataMap<?> article = articleService.findArticleById(articleId);
@@ -125,9 +138,11 @@ public class ArticleController {
         return JsonResult.success().toJSON();
     }
 
+
+
+/*
     @Value("${upload.path}")
     private String uploadBasePath;
-
     //上传文章中的图片
     @PostMapping("/uploadImage")
     @ResponseBody
@@ -237,5 +252,122 @@ public class ArticleController {
         }
     }
 
+*/
 
+
+    @PostMapping("/uploadImage")
+    @ResponseBody
+    public Map<String, Object> uploadImage(@RequestParam("editormd-image-file") MultipartFile file) {
+        Map<String, Object> result = new HashMap<>();
+        if (file.isEmpty()) {
+            result.put("success", 0);
+            result.put("message", "文件为空");
+            return result;
+        }
+
+        try {
+            String originalFilename = file.getOriginalFilename();
+            // 分离文件名和扩展名
+            String baseName = originalFilename;
+            String extension = "";
+            assert originalFilename != null;
+            int dotIndex = originalFilename.lastIndexOf('.');
+            if (dotIndex > 0) {
+                baseName = originalFilename.substring(0, dotIndex);
+                extension = originalFilename.substring(dotIndex); // 包含点号，如 ".jpg"
+            }
+
+            String fileHash = DigestUtils.md5Hex(file.getInputStream());
+            // 基础名_MD5.扩展名
+            String fileName = baseName + "_" + fileHash + extension;
+
+            // 2. 定义在COS上的路径（对象键），例如：uploads/xxx.jpg
+            String cosKey = "uploads/" + fileName;
+
+            // 3. 设置对象的元数据，比如Content-Type
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            metadata.setContentType(file.getContentType());
+
+            // 4. 构造上传请求并执行上传（核心替换点）
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, cosKey, file.getInputStream(), metadata);
+            cosClient.putObject(putObjectRequest);
+
+            // 5. 返回可直接访问的图片URL
+            String imageUrl = String.format("https://%s.cos.%s.myqcloud.com/%s",
+                    bucketName, region, cosKey);
+            // 如果你以后配置了CDN域名，可以替换成类似 https://static.onepaperlove.top/%s 的格式
+
+            result.put("success", 1);
+            result.put("message", "上传成功");
+            result.put("url", imageUrl);
+            return result;
+
+        } catch (Exception e) {
+            result.put("success", 0);
+            result.put("message", "上传失败：" + e.getMessage());
+            return result;
+        }
+    }
+
+    @PostMapping("/uploadImageArticle")
+    public Map<String, Object> uploadCoverImage(@RequestParam("file") MultipartFile file,
+                                                HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+
+        if (file.isEmpty()) {
+            result.put("success", false);
+            result.put("message", "文件为空");
+            return result;
+        }
+
+        try {
+            String originalFilename = file.getOriginalFilename();
+            // 分离文件名和扩展名
+            String baseName = originalFilename;
+            String extension = "";
+            assert originalFilename != null;
+            int dotIndex = originalFilename.lastIndexOf('.');
+            if (dotIndex > 0) {
+                baseName = originalFilename.substring(0, dotIndex);
+                extension = originalFilename.substring(dotIndex); // 包含点号，如 ".jpg"
+            }
+
+            String fileHash = DigestUtils.md5Hex(file.getInputStream());
+            // 基础名_MD5.扩展名
+            String fileName = baseName + "_" + fileHash + extension;
+
+
+            // 2. COS 中的对象键（路径），封面图放在 uploads/articles/ 下
+            String cosKey = "uploads/articles/" + fileName;
+
+            // 3. 检查 COS 中是否已存在该文件（避免重复上传）
+            if (!cosClient.doesObjectExist(bucketName, cosKey)) {
+                // 设置对象元数据，如 Content-Type
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(file.getSize());
+                metadata.setContentType(file.getContentType());
+
+                // 执行上传
+                PutObjectRequest putRequest = new PutObjectRequest(bucketName, cosKey, file.getInputStream(), metadata);
+                cosClient.putObject(putRequest);
+            }
+
+            // 4. 构造返回的图片 URL（默认使用 COS 的默认域名）
+            String imageUrl = String.format("https://%s.cos.%s.myqcloud.com/%s",
+                    bucketName, region, cosKey);
+            // 如果你以后配置了 CDN 域名，可以替换为：
+            // String imageUrl = "https://static.onepaperlove.top/" + cosKey;
+
+            result.put("success", true);
+            result.put("url", imageUrl);
+            return result;
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "上传失败：" + e.getMessage());
+            return result;
+        }
+    }
 }
+

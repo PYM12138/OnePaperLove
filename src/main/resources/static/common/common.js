@@ -1,4 +1,4 @@
-$(document).ready(function() {
+/*$(document).ready(function() {
     // 定义高亮类
     const activeClass = 'active';
 
@@ -6,7 +6,7 @@ $(document).ready(function() {
     $('#navbar_1 .nav-link').on('click', function(e) {
 
 
-        e.preventDefault(); // ❗ 阻止默认跳转（关键）
+       // e.preventDefault(); // ❗ 阻止默认跳转（关键）
 
         const href = $(this).attr('href');
 
@@ -16,9 +16,9 @@ $(document).ready(function() {
         }
 
         // 🔥 2. 停止所有动画
-        if (window.jQuery) {
+     /!*   if (window.jQuery) {
             try { $('*').stop(true, true); } catch (err) {}
-        }
+        }*!/
 
         // 🔥 3. 高亮切换（你原来的逻辑）
         // 移除所有导航项的 active 类
@@ -27,7 +27,7 @@ $(document).ready(function() {
         $(this).addClass(activeClass);
 
         // 🚀 4. 立即跳转（核心）
-        window.location.href = href;
+        // window.location.href = href;
     });
 
     // 页面加载时，根据当前 URL 高亮导航项
@@ -40,9 +40,25 @@ $(document).ready(function() {
             $(this).addClass(activeClass);
         }
     });
+});*/
+
+$(document).ready(function() {
+    // 1. 自动高亮当前菜单项 (保留这部分即可)
+    const currentPath = window.location.pathname;
+    $('#navbar_1 .nav-link').each(function() {
+        const href = $(this).attr('href');
+        if (href && (currentPath === href || currentPath === '/' + href)) {
+            $(this).addClass('active');
+        }
+    });
+
+    // 2. 手机端点击后自动收起菜单 (保留)
+    $('.navbar-nav>li>a').on('click', function () {
+        $('.navbar-collapse').collapse('hide');
+    });
+
+    // --- 删掉原来的 $('#navbar_1 .nav-link').on('click', ...) 整段拦截逻辑 ---
 });
-
-
 $('.navbar-nav>li>a').on('click', function () {
     // 折叠状态下，点击导航项后自动收起
     $('.navbar-collapse').collapse('hide');

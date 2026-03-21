@@ -24,4 +24,10 @@ logging:
     com.pym.mingblog: INFO
 upload:
   path: /mingblog/uploads/
+# 腾讯云 COS 配置
+cos:
+  secret-id: ${COS_SECRET_ID:}
+  secret-key: ${COS_SECRET_KEY:}
+  region: ap-guangzhou
+  bucket-name: mingblog-1315453841
 

@@ -63,6 +63,15 @@
     border-bottom: 2px solid #007bff !important; /* 自定义横线颜色 */
 }
 
+/* 备案号链接样式 */
+.footer a, #center-cards a[href*="beian"] {
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer a:hover, #center-cards a[href*="beian"]:hover {
+    color: #2563eb !important; /* 悬停时变为蓝色 */
+}
+
 /* 字体 */
 /* 恢复自定义字体 */
 /*@font-face {
